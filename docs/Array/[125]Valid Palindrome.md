@@ -1,0 +1,79 @@
+
+# [125. Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
+
+A phrase is a **palindrome** if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.
+
+Given a string `s`, return `true` _if it is a **palindrome**, or_ `false` _otherwise_.
+
+**Example 1:**
+
+**Input:** s = "A man, a plan, a canal: Panama"
+**Output:** true
+**Explanation:** "amanaplanacanalpanama" is a palindrome.
+
+**Example 2:**
+
+**Input:** s = "race a car"
+**Output:** false
+**Explanation:** "raceacar" is not a palindrome.
+
+**Example 3:**
+
+**Input:** s = " "
+**Output:** true
+**Explanation:** s is an empty string "" after removing non-alphanumeric characters.
+Since an empty string reads the same forward and backward, it is a palindrome.
+
+## Solution
+```
+function isPalindrome(s: string): boolean {  
+  const str = s.replace(/[^a-z0-9]/gi, '').toLowerCase();  
+  let left = 0;  
+  let right = str.length - 1;  
+  
+  while (left < right) {  
+    if (str[left] !== str[right]) {  
+      return false;  
+    }    left++;  
+    right--;  
+  }  
+  return true;  
+};
+```
+
+## My Words
+For checking if this string is a palindrome, we can utilize a two-pointer solution without extra space to solve this. We have two pointers, `left` and `right.` The `left` starts by str and the `right` at the last str position. While `left` is less than `right` to compare `str[left]` with `str[right]`, if they do not equal, return `false` otherwise, move `left`, add up one step, move `right ` cut one step, continue to compare next a couple of char. When these two pointers meet, that `left` equals `right`, so each group element is equal, ending the loop returning `true`.
+
+## Be Better
+
+Original:
+
+> For checking if this string is a palindrome, we can utilize a
+
+Adjusted:
+
+> To check if the string is a palindrome, we use a two-pointer solution without extra space.
+
+Explanation: The word "for" and "utilize" were removed to make the sentence more concise.
+
+---
+
+Original:
+
+> We have two pointers, `left` and `right.` The `left` starts by str and the `right` at the last str position.
+
+Adjusted:
+
+> We have two pointers, `left` and `right`. `Left` starts at the beginning of `str` and `right` at the end.
+
+Explanation: The adjusted version is more straightforward and avoids unnecessary repetition.
+
+---
+
+Original:
+
+> While `left` is less than `right` to compare `str[left]` with `str[right]`, if they do not equal, return `false` otherwise, move `left`, add up one step, move `right` cut one step, continue to compare next a couple of char.
+
+Adjusted:
+
+> While `left` is less than `right`, we compare `str[left]` with `str[right]`. If they're not equal, we return `false`. Otherwise, we increment `left` and decrement `right`, then continue comparing.
