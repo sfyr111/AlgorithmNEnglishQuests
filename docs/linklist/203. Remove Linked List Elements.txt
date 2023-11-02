@@ -1,0 +1,29 @@
+
+# [203. Remove Linked List Elements](https://leetcode.com/problems/remove-linked-list-elements/)
+
+## Problem
+Given the `head` of a linked list and an integer `val`, remove all the nodes of the linked list that has `Node.val == val`, and return _the new head_.
+
+## Solution
+We can create a dummy node and set it `next` to the head of the linked list. As we traverse the linked list, we check the value of the next node. If its value matches the target value, we update the `next` of the current node to skip it. Otherwise, we just move the current node forward.
+
+Why don't we use just `current` for the loop? Because if we do, removing the current node becomes tricky, and need to always ensure the next value exits. Using a dummy node and checking `current.next` simplifies the process.
+
+```
+function removeElements(head: ListNode | null, val: number): ListNode | null {  
+    const dummy = new ListNode(0);  
+    dummy.next = head;  
+    let current = dummy;  
+      
+    while (current.next) {  
+        if (current.next.val === val) {  
+            current.next = current.next.next;  
+        } else {  
+            current = current.next;  
+        }  
+  
+    }  
+  
+    return dummy.next;  
+};
+```
