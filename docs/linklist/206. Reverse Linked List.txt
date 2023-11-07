@@ -1,0 +1,33 @@
+# [206. Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/)
+
+## Problem
+
+Given the `head` of a singly linked list, reverse the list, and return _the reversed list_.
+
+## Solution
+
+```
+function reverseList(head: ListNode | null): ListNode | null {  
+  let pre = null;  
+  let cur = head;  
+  
+  while (cur !== null) {  
+    const tmp = cur.next;  
+    cur.next = pre;  
+    pre = cur;  
+    cur = tmp;  
+  }  
+  return pre;  
+};
+```
+
+To reverse a linked list, we walk through each node, redirecting the current node's next pointer to the previous node. We begin with prev set to null and cur set to head. A while loop is used to iterate over the list until cur is null, which indicates that we have reached the end of the list.
+
+During each iteration:
+
++ We save the next node (cur.next) in a temporary variable tmp to maintain access to the next node.
++ We reverse the direction of the current node to point to the previous node by setting cur.next to prev.
++ We update prev to be the current node (cur), moving prev one node forward.
++ We move cur to the next node (tmp), continuing through the original list.
++
+At the end of the loop, prev will point to the new head of the reversed list, which we then return.
