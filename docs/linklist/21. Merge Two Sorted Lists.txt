@@ -1,0 +1,41 @@
+# [21. Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
+
+## Problem
+
+You are given the heads of two sorted linked lists `list1` and `list2`.
+
+Merge the two lists into one **sorted** list. The list should be made by splicing together the nodes of the first two lists.
+
+Return _the head of the merged linked list_.
+
+## Solution
+
+We solve this problem using an iterative approach, given that both list1 and list2 are sorted. Initially, we create a dummy node and set current to point to this node. We then iterate over the lists until one reaches its end. In each iteration, we compare list1 and list2 values, connect the node with the smaller value to current.next. We then advance current and move to the next node in the smaller-value list.
+
+Once we reach the end of either list, we connect current.next to the remaining list that is not null. Finally, we return dummy.next, representing the head of the newly merged and sorted list.
+
+```
+function mergeTwoLists(list1: ListNode | null, list2: ListNode | null): ListNode | null {  
+  let dummy = new ListNode(0);  
+  let current = dummy;  
+  
+  while (list1 !== null && list2 !== null) {  
+    if (list1.val > list2.val) {  
+      current.next = list2;  
+      list2 = list2.next;  
+    } else {  
+      current.next = list1;  
+      list1 = list1.next;  
+    }    current = current.next;  
+  }  
+  
+  if (list1 === null) {  
+    current.next = list2;  
+  }  
+  if (list2 === null) {  
+    current.next = list1;  
+  }  
+  
+  return dummy.next;  
+};
+```
