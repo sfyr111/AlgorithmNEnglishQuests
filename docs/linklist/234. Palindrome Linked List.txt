@@ -1,0 +1,45 @@
+234. Palindrome Linked List
+     Problem
+     Given the head of a singly linked list, return true if it is a palindrome or false otherwise.
+
+Solution
+Find the Middle of the List: We use two pointers, slow and fast. The slow pointer moves one node at a time, while the fast pointer moves two nodes. When the fast pointer reaches the end of the list, the slow pointer will be at the middle.
+Reverse the Second Half of the List: Starting from the slow pointer, we reverse the second half of the list. We do this by reassigning the next pointer of each node in this half, effectively reversing the order of these nodes.
+Compare Both Sections: Finally, we compare the first half of the list with the reversed second half, node by node. Starting from the head of the list and the beginning of the reversed part, we check if the values of all corresponding nodes are equal. If they are, the list is a palindrome; otherwise, it's not.
+By locating the middle of the list, reversing the second half, and then comparing the two halves, the function determines whether the linked list
+
+function isPalindrome(head: ListNode | null): boolean {  
+// 1. place the slow pointer in the middle of list.  
+let slow = head;  
+let fast = head;
+
+while (fast !== null && fast.next !== null) {  
+slow = slow.next;  
+fast = fast.next.next;  
+}
+
+// 2. reverse the end half of list.  
+let prev = null;  
+let cur = slow;
+
+while (cur !== null) {  
+const next = cur.next;  
+cur.next = prev;  
+prev = cur;  
+cur = next;  
+}
+
+// 3. compare the start half and end half of list.  
+let first = head;  
+let second = prev;
+
+while (second !== null) {  
+if (first.val !== second.val)  
+return false;
+
+    first = first.next;  
+    second = second.next;  
+}
+
+return true;  
+}
