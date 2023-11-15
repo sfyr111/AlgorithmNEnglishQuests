@@ -1,0 +1,20 @@
+## Problem
+Given the heads of two singly linked-lists `headA` and `headB`, return _the node at which the two lists intersect_. If the two linked lists have no intersection at all, return `null`.
+
+## Solution
+
+Since the linked lists might have different lengths, directly comparing their nodes can be challenging. To address this, we can use two pointers to traverse each list. Once a pointer reaches the end of its respective list, reset it to point to the head of the other linked list. This way, each pointer will traverse the total length of both lists. We start by creating two pointers, `list1` and `list2`, pointing to the head nodes of the two linked lists. Use a while loop to continue as long as the two pointers are not equal. When one list reaches its end, redirect its pointer to the head of the other list. Finally, the intersection is found when the two pointers point to the same node, which we then return. If the lists do not intersect, both pointers will eventually point to `null`.
+
+```
+function getIntersectionNode(headA: ListNode | null, headB: ListNode | null): ListNode | null {  
+  let list1 = headA;  
+  let list2 = headB;  
+  
+  while (list1 !== list2) {  
+    list1 = list1 ? list1.next : headB;  
+    list2 = list2 ? list2.next : headA;  
+  }  
+  
+  return list1;  
+};
+```
