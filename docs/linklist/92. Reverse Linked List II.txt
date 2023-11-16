@@ -1,0 +1,41 @@
+# [92. Reverse Linked List II](https://leetcode.com/problems/reverse-linked-list-ii/)
+
+## Problem
+
+Given the `head` of a singly linked list and two integers `left` and `right` where `left <= right`, reverse the nodes of the list from position `left` to position `right`, and return _the reversed list_.
+
+## Idea
+
+To reverse a section of a linked list, we first locate the start and end of the target range. Then, we reverse these parts and adjust the pointer to maintain the list correctly.
+
+## Solution
+
+To reverse part of a linked list, we first create a dummy node. This helps us avoid edge cases involving the head node. We move the startPrev pointer to just before the target section. Then, using two more pointers, prev set to startPrev.next and cur set to startPrev.next.next, we reverse the section by changing cur.next to point to the prev node. After reversing, we reconnect the list to preserve the linked list's order.
+
+```
+function reverseBetween(head: ListNode | null, left: number, right: number): ListNode | null {  
+    const dummy = new ListNode(0);  
+    dummy.next = head;  
+    let startPrev = dummy;  
+      
+    for (let i = 0; i < left - 1; i++) {  
+        startPrev = startPrev.next;  
+    }  
+  
+    let prev = startPrev.next;  
+    let cur = startPrev.next.next;  
+  
+    for (let j = 0; j < right - left; j++) {  
+        const next = cur.next;  
+        cur.next = prev;  
+        prev = cur;  
+        cur = next;  
+    }  
+  
+    startPrev.next.next = cur;  
+    startPrev.next = prev;  
+  
+    return dummy.next;  
+  
+}
+```
