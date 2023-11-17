@@ -1,0 +1,40 @@
+# [142. Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
+
+## Problem
+
+Given the `head` of a linked list, return _the node where the cycle begins. If there is no cycle, return_ `null`.
+
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the `next` pointer. Internally, `pos` is used to denote the index of the node that tail's `next` pointer is connected to (**0-indexed**). It is `-1` if there is no cycle. **Note that** `pos` **is not passed as a parameter**.
+
+**Do not modify** the linked list.
+
+## Solution
+
+This problem can be solved in two steps. First, use `slow` and `fast` pointers to find a meeting point within the cycle. The `slow` pointer moves one step at a time, and the `fast` pointer moves two steps. If a cycle exists, they will meet inside it. Then, considering the distance from the `head` to the cycle's start as `m`, the distance from the start to the meeting point as `x`, and the cycle's length as `c`, the remaining distance from the meeting point back to the start is `c-x`. Since `fast` travels `m + x + nc` and `slow` travels `2(m+x)`, equating these gives `m = c - x` when `n` equals 1. This means the distance from the `head` to the cycle's start is the same as from the meeting point back to the start. Moving one pointer to the `head` and advancing both at the same pace, they will meet at the cycle's beginning.
+
+```
+function detectCycle(head: ListNode | null): ListNode | null {  
+    let slow = head;  
+    let fast = head;  
+  
+    while (fast !== null && fast.next !== null) {  
+        slow = slow.next;  
+        fast = fast.next.next;  
+        if (slow === fast) {  
+            break; // being found;  
+        }  
+    }  
+  
+    if (fast === null || fast.next === null) {  
+        return null; // not found;  
+    }  
+  
+    slow = head;  
+    while (slow !== fast) {  
+        slow = slow.next;  
+        fast = fast.next;  
+    }  
+  
+    return slow;  
+};
+```
