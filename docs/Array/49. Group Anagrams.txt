@@ -1,0 +1,53 @@
+# [49. Group Anagrams](https://leetcode.com/problems/group-anagrams/)
+
+## Problem
+
+Given an array of strings `strs`, group **the anagrams** together. You can return the answer in **any order**.
+
+An **Anagram** is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+## Solution
+
+To solve the group anagrams problem, we use a hash table. For each string, make a unique key by counting its characters or sorting them. If strings have the same key, they are anagrams and are grouped together in the hash table. In the end, we collect all the groups into an array.
+
+```
+function groupAnagrams(strs: string[]): string[][] {  
+  const map: { [key: string]: string[] } = {};  
+  
+  for (let str of strs) {  
+    const count = new Array(26).fill(0);  
+  
+    for (let char of str) {  
+      count[char.charCodeAt(0) - 'a'.charCodeAt(0)] += 1;  
+    }  
+    const key = count.join('#');  
+  
+    if (!map[key]) {  
+      map[key] = [];  
+    }    map[key].push(str);  
+  }  
+  
+  return Object.values(map);  
+};
+```
+
+```
+function groupAnagrams(strs: string[]): string[][] {  
+  const map: { [key: string]: string[] } = {};  
+  
+  for (let str of strs) {  
+    const count = new Array(26).fill(0);  
+  
+    for (let char of str) {  
+      count[char.charCodeAt(0) - 'a'.charCodeAt(0)] += 1;  
+    }  
+    const key = count.join('#');  
+  
+    if (!map[key]) {  
+      map[key] = [];  
+    }    map[key].push(str);  
+  }  
+  
+  return Object.values(map);  
+};
+```
