@@ -1,0 +1,33 @@
+121. Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
+
+## Problem
+
+You are given an array `prices` where `prices[i]` is the price of a given stock on the `ith` day.
+
+You want to maximize your profit by choosing a **single day** to buy one stock and choosing a **different day in the future** to sell that stock.
+
+Return _the maximum profit you can achieve from this transaction_. If you cannot achieve any profit, return `0`.
+
+## Solution
+
+To solve this, we use a sliding window with two pointers, `left` for buying and `right` for selling. We move the `right` pointer to compare prices and calculate profit. If a profit is found, we update `maxProfit`. If the `right` pointer finds a lower price, indicating a better buying opportunity, we move the `left` pointer to the `right`. We continue sliding `right` and updating `maxProfit` until the end.
+
+```
+function maxProfit(prices: number[]): number {  
+  let left = 0; // buy  
+  let right = 1; // sell  
+  let maxProfit = 0;  
+  
+  while (right < prices.length) {  
+    if (prices[left] < prices[right]) {  
+      const profit = prices[right] - prices[left]; // calculate the profit  
+      maxProfit = Math.max(maxProfit, profit); // update max profit  
+    } else {  
+      left = right; // find a smaller buy pointer, slide the left window  
+    }  
+    right += 1; // slide the right window  
+  }  
+  
+  return maxProfit;  
+};
+```
