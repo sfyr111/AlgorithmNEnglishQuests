@@ -1,0 +1,42 @@
+# 3. Longest Substring Without Repeating Characters
+
+[3. Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+
+## Problem
+
+Given a string `s`, find the length of the **longest** **substring** without repeating characters.
+
+## Solution
+
+To solve this problem, we use a sliding window approach. We start with the left pointer at the beginning and the right pointer moving along the string. We store unique characters in a set (`charSet`) as we iterate. If we encounter a character already in `charSet`, we move the left pointer forward, shrinking the window and removing characters until we have a unique substring. We then update `maxLen` with the maximum length of unique substrings found. We continue by shifting the right pointer and repeating the process until we've gone through the entire string. This method has an O(n) time complexity, as each element is visited only once.
+
+```
+function lengthOfLongestSubstring(s: string): number {
+  // Initialize a set to store the unique characters of the current substring.
+  let charSet: Set<string> = new Set();
+  // This will hold the maximum length of substring found without repeating characters.
+  let maxLen = 0;
+  // The 'l' pointer represents the start of the current substring.
+  let l = 0;
+
+  // Iterate over the string with 'r' representing the end of the current substring.
+  for (let r = 0; r < s.length; r++) {
+    // If the current character is already in the set, it means we have found a repeating character.
+    while (charSet.has(s[r])) {
+      // Delete the character at the start of the substring from the set because it's a duplicate.
+      charSet.delete(s[l]);
+      // Move the left pointer forward to shrink the window and remove the duplicate character.
+      l++;
+    }
+
+    // Add the current character to the set as it is confirmed to be unique in the current window.
+    charSet.add(s[r]);
+    // Update the maximum length found. The size of the set represents the number of unique characters.
+    maxLen = Math.max(maxLen, charSet.size);
+  }
+
+  // After iterating through the string, return the maximum length of substring found.
+  return maxLen;
+}
+
+```
