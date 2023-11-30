@@ -1,0 +1,42 @@
+# 424. Longest Repeating Character Replacement
+
+424. Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/)
+
+## Problem
+
+You are given a string `s` and an integer `k`. You can choose any character of the string and change it to any other uppercase English character. You can perform this operation at most `k` times.
+
+Return _the length of the longest substring containing the same letter you can get after performing the above operations_.
+
+## Solution
+
+To solve this problem, we use a sliding window approach. Starting with both left and right pointers at the beginning of the string, we shift the right pointer to count each character. We track the maximum frequency of any character in the current window. If the window's length minus this maximum frequency exceeds `k`, we shift the left pointer, reducing the count of the character at this position until the window satisfies the condition again. We continually update `res` with the maximum length of the valid window. Finally, we return `res`. This method ensures we find the answer.
+
+```
+function characterReplacement(s: string, k: number): number {
+  let res = 0;
+  let count: Record<string, number> = {};
+  let left = 0;
+  let maxf = 0; // max frequency
+
+  for (let right = 0; right < s.length; right++) {
+    count[s[right]] = (count[s[right]] || 0) + 1;
+    maxf = Math.max(maxf, count[s[right]]);
+
+    // Calculate the window length inside the loop to ensure it's always up to date.
+    while ((right - left + 1) - maxf > k) {
+      count[s[left]] -= 1;
+      // If the character at the `left` was the max frequency character and its count has decreased,
+      // `maxf` may need to be recalculated. This is a potential inefficiency.
+      left++;
+    }
+
+    // Now, calculate `windowlen` after the while loop to get the current window size.
+    let windowlen = right - left + 1;
+    res = Math.max(res, windowlen);
+  }
+
+  return res;
+};
+
+```
