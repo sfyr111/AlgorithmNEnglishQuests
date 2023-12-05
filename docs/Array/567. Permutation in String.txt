@@ -1,0 +1,54 @@
+# 567. Permutation in String
+
+[567. Permutation in String](https://leetcode.com/problems/permutation-in-string/)
+
+## Problem
+
+Given two strings `s1` and `s2`, return `true` _if_ `s2` _contains a permutation of_ `s1`_, or_ `false` _otherwise_.
+
+In other words, return `true` if one of `s1`'s permutations is the substring of `s2`.
+
+## Solution
+
+To solve this problem, we use a sliding window approach. We set the window size equal to the length of `s1` and slide it through `s2`, tracking the frequency of each character within the window. We use two hash tables, `s1Map` and `s2Map`, to record the character frequencies of `s1` and the current window in `s2`, respectively. Initially, we populate these tables for the first window in `s2`. Then, as we slide the window through `s2`, we update `s2Map` and compare it with `s1Map` to check for a permutation match.
+
+```
+function checkInclusion(s1: string, s2: string): boolean {
+  // Return false if s1 is longer than s2, as inclusion isn't possible
+  if (s1.length > s2.length)
+    return false;
+
+  // Create frequency arrays for s1 and s2, initialized with zeros
+  const s1Map = new Array(26).fill(0);
+  const s2Map = new Array(26).fill(0);
+
+  // Populate frequency arrays for the first window of s2 and for s1
+  for (let i = 0; i < s1.length; i++) {
+    s1Map[s1.charCodeAt(i) - 'a'.charCodeAt(0)]++;
+    s2Map[s2.charCodeAt(i) - 'a'.charCodeAt(0)]++;
+  }
+
+  // Compare frequency arrays; if equal, s1's permutation is in the first window of s2
+  if (s1Map.join('') === s2Map.join(''))
+    return true;
+
+  let l = 0;  // Left pointer for the sliding window
+
+  // Start sliding the window over s2
+  for (let r = s1.length; r < s2.length; r++) {
+    // Add new character to s2Map and remove the leftmost character
+    s2Map[s2.charCodeAt(r) - 'a'.charCodeAt(0)]++;
+    s2Map[s2.charCodeAt(l) - 'a'.charCodeAt(0)]--;
+
+    // Compare updated frequency arrays after sliding the window
+    if (s1Map.join('') === s2Map.join(''))
+      return true;
+
+    l++;  // Move the left pointer to the right
+  }
+
+  // Final check if the remaining window contains s1's permutation
+  return s1Map.join('') === s2Map.join('');
+};
+
+```
