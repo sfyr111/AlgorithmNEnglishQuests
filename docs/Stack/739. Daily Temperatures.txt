@@ -1,0 +1,40 @@
+# 739. Daily Temperatures
+
+[739. Daily Temperatures](https://leetcode.com/problems/daily-temperatures/)
+
+## Problem
+
+Given an array of integers `temperatures` represents the daily temperatures, return _an array_ `answer` _such that_ `answer[i]` _is the number of days you have to wait after the_ `ith` _day to get a warmer temperature_. If there is no future day for which this is possible, keep `answer[i] == 0` instead.
+
+## Solution
+
+To solve this problem,  Create an array of zeros with the same length as the temperatures array. Iterate through each temperature. Use a stack to compare and store indices. If a temperature is higher than the one on top of the stack, update the corresponding position in the zero arrays with the day difference and add the current index to the stack. Calculate until the end of the iteration.
+
+```typescript
+function dailyTemperatures(temperatures: number[]): number[] {
+  // Initialize a stack to keep track of temperatures' indices.
+  let stack: number[] = [];
+
+  // Initialize the result array with the same length as temperatures array, filled with zeros.
+  let res: number[] = new Array(temperatures.length).fill(0);
+
+  // Iterate through each temperature in the temperatures array.
+  for (let i = 0; i < temperatures.length; i++) {
+    // While the stack is not empty and the current temperature is greater than the temperature at the index on top of the stack.
+    while (stack.length > 0 && temperatures[i] > temperatures[stack[stack.length - 1]]) {
+      // Pop the index from the stack. This index represents the day for which we've found a warmer temperature.
+      const index = stack.pop();
+
+      // Calculate the number of days until a warmer temperature and update the result array at the popped index.
+      res[index] = i - index;
+    }
+
+    // Push the current index onto the stack. This index represents a day for which we're yet to find a warmer temperature.
+    stack.push(i);
+  }
+
+  // Return the result array, which contains the number of days until a warmer temperature for each day.
+  return res;
+};
+
+```
