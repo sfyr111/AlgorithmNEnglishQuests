@@ -1,0 +1,68 @@
+# 74. Search a 2D Matrix
+
+[74. Search a 2D Matrix](https://leetcode.com/problems/search-a-2d-matrix/)
+
+## Problem
+
+You are given an `m x n` integer matrix `matrix` with the following two properties:
+
+- Each row is sorted in non-decreasing order.
+- The first integer of each row is greater than the last integer of the previous row.
+
+Given an integer `target`, return `true` _if_ `target` _is in_ `matrix` _or_ `false` _otherwise_.
+
+You must write a solution in `O(log(m * n))` time complexity.
+
+## Solution
+
+To search for a number in a sorted matrix, use binary search twice: first to identify the potential row by comparing the target with the first or last elements of each row, and then to search within that row. This has a time complexity of O(log M + log N), where M is the number of rows and N is the number of columns.
+
+```typescript
+function searchMatrix(matrix: number[][], target: number): boolean {
+  let top = 0; // Start with the first row
+  let bot = matrix.length - 1; // ... and the last row
+  let ROW: number; // This will hold the index of the row that might contain the target
+
+  // Binary search to find the row where the target might be
+  while (top <= bot) {
+    const mid = Math.floor((top + bot) / 2); // Middle index
+    if (target < matrix[mid][0]) {
+      // Target is less than the first element of mid row
+      bot = mid - 1; // Eliminate the lower half
+    } else if (target > matrix[mid][matrix[0].length - 1]) {
+      // Target is greater than the last element of mid row
+      top = mid + 1; // Eliminate the upper half
+    } else {
+      ROW = mid; // Found the row where the target might be
+      break;
+    }
+  }
+
+  // If we have not found a suitable row, return false
+  if (top > bot) {
+    return false;
+  }
+
+  // At this point, ROW contains the row index where the target may be found
+  // Now we perform a binary search on this row
+  let left = 0; // Start with the first element of the row
+  let right = matrix[ROW].length - 1; // ... and the last element of the row
+
+  // Binary search within the found row
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2); // Middle index of the row
+    if (target < matrix[ROW][mid]) {
+      // Target is less than the mid element
+      right = mid - 1; // Eliminate the right half
+    } else if (target > matrix[ROW][mid]) {
+      // Target is greater than the mid element
+      left = mid + 1; // Eliminate the left half
+    } else {
+      return true; // Target found
+    }
+  }
+
+  // Target is not found after searching the whole row
+  return false;
+};
+
