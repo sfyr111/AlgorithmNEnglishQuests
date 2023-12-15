@@ -1,0 +1,64 @@
+# 981. Time Based Key-Value Store
+
+[981. Time Based Key-Value Store](https://leetcode.com/problems/time-based-key-value-store/)
+
+## Problem
+
+Design a time-based key-value data structure that can store multiple values for the same key at different time stamps and retrieve the key's value at a certain timestamp.
+
+Implement the `TimeMap` class:
+
+- `TimeMap()` Initializes the object of the data structure.
+- `void set(String key, String value, int timestamp)` Stores the key `key` with the value `value` at the given time `timestamp`.
+- `String get(String key, int timestamp)` Returns a value such that `set` was called previously, with `timestamp_prev <= timestamp`. If there are multiple such values, it returns the value associated with the largest `timestamp_prev`. If there are no values, it returns `""`.
+## Solution
+
+For this problem, our task is to design a data structure that can store and retrieve values based on keys and timestamps. To achieve this, we can associate each key with a list of value-timestamp pairs and store these lists in a hashmap.
+
+To set a value, we simply add a new pair to the list that corresponds to the key. Since timestamps are always increasing, this list is inherently sorted by timestamp, which is important for our retrieval method.
+
+Retrieval is where it gets interesting. We need to return the value with the highest timestamp that is still less than or equal to the given timestamp. To do this efficiently, we use binary search.
+
+Here's how it works: the midpoint in a binary search is rounded down, so it naturally falls into the left partition of the list. If the midpoint's timestamp is less than or equal to the target timestamp, it's a potential match, and we update the result with this value. We then move the left pointer past the midpoint to continue searching for an even closer timestamp. This is because there might be a value with a timestamp closer to, but still less than, the target timestamp. We keep doing this until the left pointer exceeds the right pointer.
+
+In summary, this approach combines the use of a hashmap with binary search. Since the lists are sorted by timestamp, it ensures an efficient search for the correct value. This method guarantees that we can set values in constant time and retrieve them in logarithmic time relative to the number of entries for a key.
+
+
+```typescript
+class TimeMap {  
+    private map: Map<string, Array<[string, number]>>  
+    constructor() {  
+        this.map = new Map();  
+    }  
+  
+    set(key: string, value: string, timestamp: number): void {  
+        if (!this.map.has(key)) {  
+            this.map.set(key, []);  
+        }        const values = this.map.get(key);  
+        values.push([value, timestamp]);  
+    }  
+  
+    get(key: string, timestamp: number): string {  
+        let res = '';  
+        const values = this.map.get(key) || [];  
+        if (values.length === 0) {  
+            return '';  
+        }  
+        let left = 0;  
+        let right = values.length - 1;  
+  
+        while (left <= right) {  
+            const mid = left + right >> 1;  
+  
+            if (values[mid][1] <= timestamp) {  
+                res = values[mid][0];  
+                left = mid + 1;  
+            } else {  
+                right = mid - 1;  
+            }  
+        }  
+  
+        return res;  
+    }  
+}
+```
