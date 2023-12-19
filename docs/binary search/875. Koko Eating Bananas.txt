@@ -1,0 +1,63 @@
+# [875. Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/)
+
+## Problem
+
+Koko loves to eat bananas. There are `n` piles of bananas, the `ith` pile has `piles[i]` bananas. The guards have gone and will come back in `h` hours.
+
+Koko can decide her bananas-per-hour eating speed of `k`. Each hour, she chooses some pile of bananas and eats `k` bananas from that pile. If the pile has less than `k` bananas, she eats all of them instead and will not eat any more bananas during this hour.
+
+Koko likes to eat slowly but still wants to finish eating all the bananas before the guards return.
+
+Return _the minimum integer_ `k` _such that she can eat all the bananas within_ `h` _hours_.
+
+## Solution
+
+```typescript
+function minEatingSpeed(piles: number[], h: number): number {
+    let left = 1; // Start with the lowest possible eating speed.
+    let right = Math.max(...piles); // The highest speed is the largest pile.
+    let res = right; // Assume the highest speed as the initial result.
+
+    // Use binary search to find the minimum speed.
+    while (left <= right) {
+        const k = (left + right) >> 1; // Calculate the middle speed.
+        let hours = 0; // Track the total hours spent eating with speed k.
+
+        // Calculate the total hours to eat all piles at speed k.
+        for (let pile of piles) {
+            hours += Math.ceil(pile / k); // Ceiling because Koko can't eat fractions of a banana.
+        }
+
+        // If the total hours is within the limit, try a slower speed.
+        if (hours <= h) {
+            res = Math.min(k, res); // Update the result with the slower speed.
+            // res = k;
+            right = k - 1; // Narrow the search to slower speeds.
+        } else {
+            // If not, try a faster speed.
+            left = k + 1; // Narrow the search to faster speeds.
+        }
+    }
+
+    // The result is the slowest speed at which Koko can eat all bananas in time.
+    return res;
+};
+```
+
+We need to determine the slowest speed at which Koko can eat all the bananas within a given time frame. To do this, we use a method called "binary search."
+
+Here's how we do it:
+
+1. We start with the slowest speed of 1 banana per hour and the fastest speed equal to the biggest banana pile.
+2. We guess a speed halfway between the slowest and fastest speeds and see how long it takes Koko to eat all the bananas at this speed.
+3. If Koko can eat all the bananas within the given time frame, we try a slower speed.
+4. If not, we try a faster speed.
+5. We keep adjusting our guess until we find the slowest speed that works within the given time frame.
+
+We use this code to solve the problem:
+
+- We have two variables, "left" and "right," which represent the slowest and fastest speeds.
+- We loop through and make a new guess at a speed.
+- We calculate how long it takes Koko to eat all the bananas at this guess.
+- If this time is less than or equal to the given time frame, we try a slower speed. Otherwise, we try a faster speed.
+- We stop when "left" is greater than "right," and return the slowest speed that works, which we store in the variable "res."
