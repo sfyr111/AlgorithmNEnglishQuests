@@ -1,0 +1,43 @@
+# 287. Find the Duplicate Number]
+
+[287. Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
+
+## Problem
+
+Given an array of integers `nums` containing `n + 1` integers where each integer is in the range `[1, n]` inclusive.
+
+There is only **one repeated number** in `nums`, return _this repeated number_.
+
+You must solve the problem **without** modifying the array `nums` and uses only constant extra space.
+
+## Solution
+
+In nums, each number points to the following index. If nums[0] is 3, it means to nums[3]. This makes it like a list where each element connects to another. Because numbers repeat, it must make a loop in the list. We find this loop to find a duplicate.
+
+For Floyd's algorithm, the first step is to set slow and fast. Slow is like nums[0], the first element in the array. fast is nums[nums[0]]. The slow move is one step each time; the fast move is two steps. They move until they meet. This meeting is inside loop.
+
+After the meeting, the critical part is finding the start of the loop. We put a new pointer begin at the start, which means begin is 0. We move the slow and begin pointer one step each time. When they meet, this is the start of the loop. This point is a duplicate number.
+
+The reason we do this is math. Distance from start to loop start and from first meet to loop start is the same. So, when begin and slow meet, it must be the start of the loop.
+
+This way, we use nums as a list to find the loop for duplicates. It is fast and does not need extra space.
+
+```typescript
+function findDuplicate(nums: number[]): number {  
+  let slow = nums[0];  
+  let fast = nums[nums[0]];  
+  
+  while (slow !== fast) {  
+    slow = nums[slow];  
+    fast = nums[nums[fast]];  
+  }  
+  
+  let begin = 0;  
+  
+  while (begin !== slow) {  
+    begin = nums[begin];  
+    slow = nums[slow];  
+  }  
+  
+  return begin;  
+};
