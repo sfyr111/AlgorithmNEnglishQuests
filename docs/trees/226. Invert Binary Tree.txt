@@ -1,0 +1,53 @@
+# 226. Invert Binary Tree
+
+# [226. Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/)
+
+## Problem
+
+Given the `root` of a binary tree, invert the tree, and return _its root_.
+## Solution
+
+There are two methods in the code. Both methods do the same thing but in different ways.
+
+The first method is recursive. We check if the node is not null. Then, swap left and right children. After that, we recursively call functions for left and right children.
+
+The second method uses a queue. It's an iterative approach. We add root to the queue. Then, while the queue is not empty, we remove the first element. We swap its children. If children are not null, we add them to the queue.
+
+Both methods return the root of the inverted tree.
+
+So, in summary, this code inverts a binary tree. It can be done recursively or iteratively using a queue. Both methods swap left and right children of all nodes.
+
+```typescript
+function invertTree(root: TreeNode | null): TreeNode | null {
+  if (root === null) {
+    return null;
+  }
+
+  const temp = root.left;
+  root.left = root.right;
+  root.right = temp;
+
+
+  invertTree(root.left);
+  invertTree(root.right);
+
+  return root;
+};
+
+function invertTree(root: TreeNode | null): TreeNode | null {
+  let queue: Array<TreeNode> = [root];
+
+  while (queue.length !== 0) {
+    const current = queue.shift();
+
+    if (current !== null) {
+      [current.left, current.right] = [current.right, current.left];
+
+      current.left !== null && queue.push(current.left);
+      current.right !== null && queue.push(current.right);
+    }
+  }
+
+  return root;
+};
+```
