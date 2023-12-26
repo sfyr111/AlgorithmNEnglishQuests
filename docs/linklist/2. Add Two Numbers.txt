@@ -1,0 +1,51 @@
+# 2. Add Two Numbers
+
+[2. Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
+
+## Problem
+
+You are given two **non-empty** linked lists representing two non-negative integers. The digits are stored in **reverse order**, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
+
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+## Solution
+
+To solve the 'Add Two Numbers' problem, create a dummy node as the start of the result-linked list. Use a 'while' loop that runs while either the list has nodes or there is a carry left. Inside the loop, add values of two nodes from lists. If the list is finished, use zero for the value. Add any carry from the last step. Calculate the sum. New carry is the sum divided by 10, but only the whole number part. Take the remainder of the sum with 10. This is a new digit for the result list. Add this digit to the end of the result list. Move to the next nodes in both lists. Finally, return the list that starts after the dummy node. This approach covers different length lists and handles carried at the end of lists.
+
+```typescript
+function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | null {
+  // Create a dummy head for the result linked list.
+  let dummy = new ListNode();
+  // This will be the current node in the result linked list.
+  let cur = dummy;
+  // Variable to keep track of the carry from addition.
+  let carry = 0;
+
+  // Iterate while there are still nodes to process in l1 or l2, or there is a carry.
+  while (l1 || l2 || carry) {
+    // Get the value of the current node from l1, or 0 if l1 is exhausted.
+    let v1 = l1 ? l1.val : 0;
+    // Get the value of the current node from l2, or 0 if l2 is exhausted.
+    let v2 = l2 ? l2.val : 0;
+
+    // Calculate the sum of the two digits and the carry.
+    const sum = v1 + v2 + carry;
+    // Update the carry for the next iteration.
+    carry = sum / 10 | 0; // Integer division by 10.
+    // Get the single digit to store in the current node of the result linked list.
+    const curVal = sum % 10;
+
+    // Create a new node with the single digit and append it to the result list.
+    cur.next = new ListNode(curVal);
+
+    // Move to the next node in the result list.
+    cur = cur.next;
+    // Move to the next nodes in l1 and l2, if available.
+    l1 = l1 ? l1.next : null;
+    l2 = l2 ? l2.next : null;
+  }
+
+  // Return the result list, which is next to the dummy node.
+  return dummy.next;
+};
+```
