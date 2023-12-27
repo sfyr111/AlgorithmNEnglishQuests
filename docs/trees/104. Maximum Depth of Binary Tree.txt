@@ -1,0 +1,81 @@
+# 104. Maximum Depth of Binary Tree
+
+[104. Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
+
+## Problem
+
+Given the `root` of a binary tree, return _its maximum depth_.
+
+A binary tree's **maximum depth** is the number of nodes along the longest path from the root node down to the farthest leaf node.
+
+## Solution
+
+First method is recursive. We check if the root is null. If yes, depth is zero. Otherwise, we find the maximum depth of left and right subtrees. We add one to the greater depth. This is depth of tree.
+
+Second method uses a queue, for iterative approach. We add root to queue and set depth to zero. We loop while queue is not empty. Each level of tree increases depth by one. We add children of nodes to queue. This way, we go through all levels of tree.
+
+Third method uses a stack. It's also iterative. We push root and its level to stack. Level starts at one. We pop elements from stack. We update depth to maximum level we see. We push children of node to stack with their levels.
+
+```typescript
+// Recursive Method
+function maxDepth(root: TreeNode | null): number {
+  if (root === null) {
+    return 0;
+  }
+
+  return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+};
+
+// Breadth-First Search (BFS) Traversal
+function maxDepth(root: TreeNode | null): number {
+  if (root === null) {
+    return 0;
+  }
+
+  let queue: TreeNode[] = [root];
+  let depth = 0;
+
+  while (queue.length > 0) {
+    let size = queue.length;
+
+    for (let i = 0; i < size; i++) {
+      const current = queue.shift();
+      if (current.left) {
+        queue.push(current.left);
+      }
+      if (current.right) {
+        queue.push(current.right);
+      }
+    }
+
+    depth += 1;
+  }
+
+  return depth;
+
+};
+
+// Depth-First Search (DFS) Traversal
+function maxDepth(root: TreeNode | null): number {
+  if (root === null) {
+    return 0;
+  }
+
+  let stack: [TreeNode | null, number][] = [[ root, 1 ]];
+  let depth = 0;
+
+  while (stack.length > 0) {
+    const [node, level] = stack.pop();
+
+    if (node) {
+      depth = Math.max(depth, level);
+      stack.push([node.left, level + 1]);
+      stack.push([node.right, level + 1]);
+    }
+
+  }
+
+  return depth;
+};
+
+```
