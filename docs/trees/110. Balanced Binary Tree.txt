@@ -1,0 +1,45 @@
+110. Balanced Binary Tree](https://leetcode.com/problems/balanced-binary-tree/)
+
+## Problem
+
+Given a binary tree, determine if it is **height-balanced**
+
+## Solution
+
+This code checks if a binary tree is balanced. A balanced tree means the height difference between left and right subtrees for all nodes is not more than one.
+
+Here's how it works:
+
+- We have a helper function `dfs` that we call recursively on each node.
+- If a node is `null`, we return `true` for balanced and `0` for height because an empty tree is balanced and its height is zero.
+- For non-null nodes, we get balance status and height for left and right subtrees.
+- We check if the current node is balanced. It is balanced if the left and right subtrees are balanced and the height difference between them is one or less.
+- We return the balance status and the height for the current node. The height is the maximum of left or right subtree heights plus one for the current node.
+- Finally, we call `dfs` on the root and return the balance status from the result.
+
+So, this approach checks each subtree's balance and height in one pass, top-down, and finds if the whole tree is balanced.
+
+```typescript
+function isBalanced(root: TreeNode | null): boolean {
+
+  function dfs(node: TreeNode) {
+    if (node === null) {
+      return [true, 0];
+    }
+
+    const [leftBalanced, leftHeight] = dfs(node.left);
+    const [rightBalanced, rightHeight] = dfs(node.right);
+
+    const balanced = (
+      leftBalanced && rightBalanced
+      && Math.abs(leftHeight - rightHeight) <= 1
+    );
+
+    return [balanced, 1 + Math.max(leftHeight, rightHeight)];
+  }
+
+  const pair = dfs(root);
+  return pair[0];
+};
+```
+
