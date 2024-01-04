@@ -1,0 +1,31 @@
+# 235. Lowest Common Ancestor of a Binary Search Tree
+
+[235. Lowest Common Ancestor of a Binary Search Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
+
+## Problem
+
+Given a binary search tree (BST), find the lowest common ancestor (LCA) node of two given nodes in the BST.
+
+According to the [definition of LCA on Wikipedia](https://en.wikipedia.org/wiki/Lowest_common_ancestor): “The lowest common ancestor is defined between two nodes `p` and `q` as the lowest node in `T` that has both `p` and `q` as descendants (where we allow **a node to be a descendant of itself**).”
+
+## Solution
+
+To find the  LCA in a binary search tree. We start at the root of the tree. Then we loop while there is a current node. Inside the loop, we check the values of p and q against the current node's value. If both values are less than the current node's value, we go left. If both values are greater than the current node's value, we go right. If the values of p and q are on the two sides of the current's value or equal to it, we've found the LCA. We return the current node as the LCA. If we don't find it, we return null.
+
+```typescript
+function lowestCommonAncestor(root: TreeNode | null, p: TreeNode | null, q: TreeNode | null): TreeNode | null {
+  let current = root;
+
+  while (current) {
+    if (p.val < current.val && q.val < current.val) {
+      current = current.left;
+    } else if (p.val > current.val && q.val > current.val) {
+      current = current.right;
+    } else {
+      return current;
+    }
+  }
+
+  return null;
+};
+```
