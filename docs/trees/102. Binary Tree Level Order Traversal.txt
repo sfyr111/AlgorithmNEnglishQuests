@@ -1,0 +1,40 @@
+# 102. Binary Tree Level Order Traversal
+
+[102. Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)
+## Problem
+
+Given the `root` of a binary tree, return _the level order traversal of its nodes' values_. (i.e., from left to right, level by level).
+
+## Solution
+
+To record each level node of the tree, we can use the breath first search to solve. We start with a root node and put it in a queue. While there are nodes in the queue, we process each level. We record the length of the queue that represents the number of nodes at the current level. We create an empty list for the level. For every node at this level, we remove it from the queue, add its value to the level list, and if it has left or right children, we add them to the queue. After we finish one level, if we have values in the level list, we add it to our result list. We do this until the queue is empty. At the end, we return the result list that contains all levels' values.
+
+```typescript
+function levelOrder(root: TreeNode | null): number[][] {
+  let res: number[][] = [];
+  let queue = [root];
+
+  while (queue.length > 0) {
+    let level = [];
+    let len = queue.length;
+
+    for (let i = 0; i < len; i++) {
+      const current = queue.shift();
+
+      if (current) {
+        level.push(current.val);
+        if (current.left) queue.push(current.left);
+        if (current.right) queue.push(current.right);
+      }
+    }
+
+    if (level.length > 0) {
+      res.push(level);
+    }
+  }
+
+  return res;
+};
+```
+
+
