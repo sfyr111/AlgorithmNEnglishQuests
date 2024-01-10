@@ -1,0 +1,37 @@
+# 1448. Count Good Nodes in Binary Tree
+
+[1448. Count Good Nodes in Binary Tree](https://leetcode.com/problems/count-good-nodes-in-binary-tree/)
+
+## Problem
+
+Given a binary tree `root`, a node _X_ in the tree is named **good** if in the path from root to _X_ there are no nodes with a value _greater than_ X.
+
+Return the number of **good** nodes in the binary tree.
+
+## Solution
+
+To count the number of good nodes in a binary tree. A good node is one where its value is greater than or equal to all the values of nodes on the path from the root to that node. We start with a variable res set to zero. This counts the number of good nodes. We then define a recursive function dfs that takes a node and the maximum value found so far on the path. If the node is null, we return zero because there's nothing to check. If the node's value is greater than or equal to the maximum value, we increase res by one because this node is a good node. We update the maximum value with the larger of the current maximum or the node's value. Then we call dfs recursively for the left and right children of the node, passing the updated maximum value to them. Finally, we execute the dfs function, starting with the root of the tree and using the root's value as the initial maximum value. This way, we traverse the whole tree and count all the good nodes.
+
+```typescript
+function goodNodes(root: TreeNode | null): number {  
+  let res = 0;  
+  
+  function dfs(node: TreeNode, maxVal: number) {  
+    if (node === null) {  
+      return 0;  
+    }  
+  
+    if (node.val >= maxVal) {  
+      res += 1;  
+    }  
+    maxVal = Math.max(maxVal, node.val);  
+  
+    dfs(node.left, maxVal);  
+    dfs(node.right, maxVal);  
+  
+    return res;  
+  }  
+  
+  return dfs(root, root.val);  
+};
+```
