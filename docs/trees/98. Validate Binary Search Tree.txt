@@ -1,0 +1,42 @@
+# 98. Validate Binary Search Tree
+
+[98. Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/)
+
+## Problem
+
+Given the `root` of a binary tree, _determine if it is a valid binary search tree (BST)_.
+
+A **valid BST** is defined as follows:
+
+- The left 
+    
+    subtree
+
+  of a node contains only nodes with keys **less than** the node's key.
+- The right subtree of a node contains only nodes with keys **greater than** the node's key.
+- Both the left and right subtrees must also be binary search trees.
+
+## Solution
+
+To check if a binary tree is a valid Binary Search Tree (BST). A BST has all left child nodes less than the parent node, and all right child nodes greater.
+We use a helper function, dfsValid, to do a Depth-First Search (DFS). It checks if each node's value is within the correct range. The left parameter is the lower å, and right is the upper boundary for the node's value.
+If a node is null, that's the base case a valid endpoint, so we return true. If a node's value is not within boundaries, we return false, because it breaks the BST rules.
+We call dfsValid recursively for left and right children, updating bounds. For left children, the current node's value becomes the new upper bound. For right children, it becomes the new lower bound.
+We start dfsValid with the root node and bounds of negative and positive infinity. This checks the whole tree.
+
+```typescript
+function isValidBST(root: TreeNode | null): boolean {  
+  
+  function dfsValid(node: TreeNode | null, left: number, right: number) {  
+    if (node === null) {  
+      return true;  
+    }    if (node.val <= left || node.val >= right) {  
+      return false;  
+    }  
+    return dfsValid(node.left, left, node.val)  
+        && dfsValid(node.right, node.val, right);  
+  }  
+  
+  return dfsValid(root, -Infinity, Infinity);  
+};
+```
