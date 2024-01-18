@@ -1,0 +1,52 @@
+# 297. Serialize and Deserialize Binary Tree
+
+[297. Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/)
+
+## Problem
+
+Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.
+
+Design an algorithm to serialize and deserialize a binary tree. There is no restriction on how your serialization/deserialization algorithm should work. You just need to ensure that a binary tree can be serialized to a string and this string can be deserialized to the original tree structure.
+
+**Clarification:** The input/output format is the same as [how LeetCode serializes a binary tree](https://support.leetcode.com/hc/en-us/articles/360011883654-What-does-1-null-2-3-mean-in-binary-tree-representation-). You do not necessarily need to follow this format, so please be creative and come up with different approaches yourself.
+
+## Solution
+
+To converting a binary tree into a string and then back to a tree. For 'serialize', we use a process called DFS, short for depth-first search, to go through each node. If a node is null, we add 'N' to our string. If not, we add the node's value. We do this for all nodes and then make a big string from it. For 'deserialize', we turn the string back into a tree. We split the string into parts. If a part is 'N', it means there was no node there, so we do nothing. Otherwise, we make a new node with that number. We do this for every part to rebuild the tree.
+
+```typescript
+function serialize(root: TreeNode | null): string {  
+  const res: string[] = [];  
+  
+  function dfs(node: TreeNode | null) {  
+    if (node === null) {  
+      res.push('N');  
+      return;  
+    }  
+    res.push(node.val.toString());  
+    dfs(node.left);  
+    dfs(node.right);  
+  }  
+  
+  dfs(root);  
+  return res.join();  
+};  
+  
+function deserialize(data: string): TreeNode | null {  
+  const vals = data.split(',');  
+  
+  function dfs(): TreeNode | null {  
+    const val = vals.shift();  
+    if (val === 'N') {  
+      return null;  
+    }    const node = new TreeNode(Number(val));  
+  
+    node.left = dfs();  
+    node.right = dfs();  
+    return node;  
+  }  
+  
+  return dfs();  
+};
+
+```
