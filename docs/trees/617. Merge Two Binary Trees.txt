@@ -1,0 +1,38 @@
+# 617. Merge Two Binary Trees
+
+[617. Merge Two Binary Trees](https://leetcode.com/problems/merge-two-binary-trees/)
+
+## Problem
+
+You are given two binary trees `root1` and `root2`.
+
+	Imagine that when you put one of them to cover the other, some nodes of the two trees are overlapped while the others are not. You need to merge the two trees into a new binary tree. The merge rule is that if two nodes overlap, then sum node values up as the new value of the merged node. Otherwise, the NOT null node will be used as the node of the new tree.
+
+Return _the merged tree_.
+
+**Note:** The merging process must start from the root nodes of both trees.
+
+## Solution
+
+When two nodes overlap, we add their values and put the sum in the new tree. If a node exists in one tree but not the other, we use the existing node in the new tree.
+1. **Create a new root node**: The value of the new root node is the sum of the two tree's root nodes. If one tree's root is null, we use the other tree's root.
+2. **Merge Left Subtrees Recursively**: We call the merge function recursively on the left children of both trees. The result becomes the left child of the new tree.
+3. **Merge Right Subtrees Recursively**: Similarly, we merge the right children of both trees recursively.
+4. **Return Result**: The end result of the recursion is the new merged tree.
+   The key is to recursively traverse each node in both trees, adding values when both nodes exist, and using the existing node when one is null.
+
+```typescript
+function mergeTrees(root1: TreeNode | null, root2: TreeNode | null): TreeNode | null {  
+  if (root1 === null && root2 === null) {  
+    return null;  
+  }  
+  const v1 = root1 ? root1.val : 0;  
+  const v2 = root2 ? root2.val : 0;  
+  
+  const root = new TreeNode(v1 + v2);  
+  
+  root.left = mergeTrees(root1 ? root1.left : null, root2 ? root2.left : null);  
+  root.right = mergeTrees(root1 ? root1.right : null, root2 ? root2.right : null);  
+  
+  return root;  
+};
