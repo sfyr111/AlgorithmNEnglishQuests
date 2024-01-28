@@ -1,0 +1,29 @@
+# 70. Climbing Stairs
+
+[70. Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
+
+## Problem
+
+You are climbing a staircase. It takes `n` steps to reach the top.
+Each time you can either climb `1` or `2` steps. In how many distinct ways can you climb to the top?
+
+## Solution
+
+The 'Climbing Stairs' problem can be solved using a bottom-up approach with two variables, 'one' and 'two'. Initially, both variables are set to 1 because there's one way to climb. For n greater than 2. Using a loop, for each step starting from the bottom, the 'one' variable is updated to be the sum of 'one' and 'two'. The 'two' variable is then set to the old value of 'one'. This process continues until all steps are calculated. The final value of 'one' will give the total number of ways to reach the top of 'n' stairs.
+
+![climb-stairs](../../static/img/climb-stairs.png)
+
+```typescript
+function climbStairs(n: number): number {
+    let one = 1;
+    let two = 1;
+    
+    for (let i = 0; i < n - 1; i++) {
+        const temp = one;
+        one = one + two;
+        two = temp;
+    }
+
+    return one;
+};
+```
