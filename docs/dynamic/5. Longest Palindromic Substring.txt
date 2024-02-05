@@ -1,0 +1,47 @@
+# 5. Longest Palindromic Substring
+
+[5. Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
+
+## Problem
+
+Given a string `s`, return _the longest_ _palindromic_
+
+## Solution
+
+To solve this problem, we can image an existing palindrome string in `s,` assuming that there are two points at the middle point of the palindrome string extending outward to the edge. Then, we return the string at the left-to-right pointer. If `s` are many palindrome strings, we need to keep track of the maximum length substring, and at the end, we return the greatest length substring. So we iterate through the `s` at each position usage while looping to process. We need to process twice at the same position. Because palindrome string length is possibly odd or even, if odd, left and right pointers begin at the `i`; if the length is even, left at the `i`, and right at the `i + 1`.
+
+```typescript
+function longestPalindrome(s: string): string {  
+  let res = '';  
+  let resLen = 0;  
+  
+  for (let i = 0; i < s.length; i++) {  
+    // odd  
+    let l = i, r = i;  
+  
+    while (l >= 0 && r < s.length && s[l] === s[r]) {  
+      if ((r - l + 1) > resLen) {  
+        res = s.slice(l, r + 1);  
+        resLen = res.length;  
+      }  
+      l--;  
+      r++;  
+    }  
+    // even  
+    l = i, r = i + 1;  
+    while (l >= 0 && r < s.length && s[l] === s[r]) {  
+      if ((r - l + 1) > resLen) {  
+        res = s.slice(l, r + 1);  
+        resLen = res.length;  
+      }  
+      l--;  
+      r++;  
+    }  }  
+  return res;  
+};
+
+```
+
+## Be better
+
+We find the longest palindrome in a string by checking around each character, for both odd and even lengths. For odd palindromes, we see if expanding from one middle point gives us a palindrome. For even palindromes, we do the same but with two middle points next to each other. We keep track of the longest palindrome we find and return it.
