@@ -1,0 +1,37 @@
+# 139. Word Break
+
+# [139. Word Break](https://leetcode.com/problems/word-break/)
+
+## Problem
+
+Given a string `s` and a dictionary of strings `wordDict`, return `true` if `s` can be segmented into a space-separated sequence of one or more dictionary words.
+
+**Note** that the same word in the dictionary may be reused multiple times in the segmentation.
+
+## Solution
+
+We use dynamic programming (DP) approach to solve the problem. The `dp` array determines if a substring can be broken into words from the dictionary. The base case is `dp[0] = true` since an empty string is always breakable.
+
+We go through the string from start to end. For each position, we look back to see if there is a way to break substring into dictionary words. If we find a word in the dictionary that matches the end of the current substring, and the part before this word can be broken, we set the current DP to true.
+
+So, we keep doing this until the end of the string. If DP at the end of the string is true, it means the whole string can be broken using dictionary words.
+
+
+```typescript
+function wordBreak(s: string, wordDict: string[]): boolean {
+    const n = s.length;
+    const dp = new Array(n + 1).fill(false);
+    dp[0] = true;
+    
+    for (let i = 1; i <= n; i++) {
+        for (let j = 0; j < i; j++) {
+            if(dp[j] && wordDict.includes(s.substring(j, i))) {
+                dp[i] = true;
+                break;
+            }
+        }
+    }
+    
+    return dp[n];
+};
+```
