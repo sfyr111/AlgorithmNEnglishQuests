@@ -1,0 +1,26 @@
+# 746. Min Cost Climbing Stairs
+
+[746. Min Cost Climbing Stairs](https://leetcode.com/problems/min-cost-climbing-stairs/)
+
+## Problem
+
+You are given an integer array `cost` where `cost[i]` is the cost of `ith` step on a staircase. Once you pay the cost, you can either climb one or two steps.
+You can either start from the step with index `0`, or the step with index `1`.
+Return _the minimum cost to reach the top of the floor_.
+
+## Solution
+
+To solve the 'Min Cost Climbing Stairs' problem, I first add a zero to the end of the cost array to represent the final step that has no cost. Then, starting from the third-last element, I update each step's cost to the sum of its own cost and the minimum of the next two steps' costs. This calculation moves backward through the array, ensuring that each step reflects the minimum cost to reach the end from that point. In the end, the minimum cost to start climbing is the smaller of the costs of the first two steps
+
+![min-cost-climb](../../static/img/min-cost-climb.png)
+
+```typescript
+function minCostClimbingStairs(cost: number[]): number {
+    cost.push(0);
+
+    for (let i = cost.length - 3; i >= 0; i--) {
+        cost[i] += Math.min(cost[i + 1], cost[i + 2]);
+    }
+
+    return Math.min(cost[0], cost[1]);
+};
