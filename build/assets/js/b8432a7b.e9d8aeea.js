@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkalgorithm_n_english_quests=self.webpackChunkalgorithm_n_english_quests||[]).push([[6394],{5766:s=>{s.exports=JSON.parse('{"label":"docusaurus","permalink":"/AlgorithmNEnglishQuests/blog/tags/docusaurus","allTagsPath":"/AlgorithmNEnglishQuests/blog/tags","count":4}')}}]);

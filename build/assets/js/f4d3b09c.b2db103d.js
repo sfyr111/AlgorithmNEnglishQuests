@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkalgorithm_n_english_quests=self.webpackChunkalgorithm_n_english_quests||[]).push([[2796],{5611:s=>{s.exports=JSON.parse('{"permalink":"/AlgorithmNEnglishQuests/blog/tags/hello","page":1,"postsPerPage":10,"totalPages":1,"totalCount":2,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);
